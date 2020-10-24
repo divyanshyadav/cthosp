@@ -1,18 +1,18 @@
 import React from 'react';
-import { Form, FormGroup, Button } from 'reactstrap';
+import { Form, FormGroup, Button, Row, Col } from 'reactstrap';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 import BackButton from '../components/BackButton';
 import TextField from '../components/TextField';
 
 interface Patient {
   firstName: string;
-  middleName?: string;
-  lastName?: string;
+  middleName: string;
+  lastName: string;
   age: number;
   gender: string;
-  sonOf?: string;
-  wifeOf?: string;
-  daughterOf?: string;
+  relativeName: string;
+  relativeType: 'S/O' | 'W/O' | 'D/O';
   complains: Array<string>;
   examinations: Array<string>;
   investigations: Array<string>;
@@ -25,21 +25,26 @@ interface Errors {
 }
 
 export default function PatientDetailsPage() {
-  const initialValues: Patient = { firstName: '' };
+  const initialValues: Patient = { firstName: '', lastName: '' };
+
+  const validationSchema = Yup.object().shape({
+    firstName: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+    lastName: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+  });
+
   return (
     <div>
       <BackButton />
-      <h1>Patient details</h1>
+      <h1>Patient Details</h1>
       <Formik
         initialValues={initialValues}
-        validate={(values: Patient) => {
-          const errors: Errors = {};
-          if (!values.firstName) {
-            errors.firstName = 'Required';
-          }
-
-          return errors;
-        }}
+        validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
           setTimeout(() => {
             // eslint-disable-next-line no-console
@@ -59,22 +64,43 @@ export default function PatientDetailsPage() {
           /* and other goodies */
         }) => (
           <Form onSubmit={handleSubmit} noValidate>
-            <FormGroup>
-              <TextField
-                name="firstName"
-                label="First Name"
-                placeholder="Enter first name"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.firstName}
-                error={
-                  errors.firstName && touched.firstName ? errors.firstName : ''
-                }
-              />
-              <Button type="submit" disabled={isSubmitting}>
-                Submit
-              </Button>
-            </FormGroup>
+            <Row form>
+              <Col>
+                <FormGroup>
+                  <TextField
+                    name="firstName"
+                    label="First Name"
+                    placeholder="eg. Red"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.firstName}
+                    error={
+                      errors.firstName && touched.firstName
+                        ? errors.firstName
+                        : ''
+                    }
+                  />
+                </FormGroup>
+              </Col>
+              <Col>
+                <FormGroup>
+                  <TextField
+                    name="lastName"
+                    label="Last Name"
+                    placeholder="eg. John"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.lastName}
+                    error={
+                      errors.lastName && touched.lastName ? errors.lastName : ''
+                    }
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Button type="submit" disabled={isSubmitting}>
+              Submit
+            </Button>
           </Form>
         )}
       </Formik>
