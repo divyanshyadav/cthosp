@@ -1,23 +1,8 @@
 import React from 'react';
-import { Form, FormGroup, Label, Input, Alert, Button } from 'reactstrap';
+import { Form, FormGroup, Button } from 'reactstrap';
 import { Formik } from 'formik';
 import BackButton from '../components/BackButton';
-
-interface TextFieldProps {
-  label: string;
-  name: string;
-  error: string;
-}
-
-function TextField({ label, name, error, ...rest }: TextFieldProps) {
-  return (
-    <div>
-      <Label for={name}>{label}</Label>
-      <Input type="text" name={name} id={name} {...rest} />
-      {error ? <Alert color="danger">{error}</Alert> : null}
-    </div>
-  );
-}
+import TextField from '../components/TextField';
 
 interface Patient {
   firstName: string;
@@ -57,7 +42,8 @@ export default function PatientDetailsPage() {
         }}
         onSubmit={(values, { setSubmitting }) => {
           setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
+            // eslint-disable-next-line no-console
+            console.log(JSON.stringify(values, null, 2));
             setSubmitting(false);
           }, 400);
         }}
@@ -76,6 +62,7 @@ export default function PatientDetailsPage() {
             <FormGroup>
               <TextField
                 name="firstName"
+                label="First Name"
                 placeholder="Enter first name"
                 onChange={handleChange}
                 onBlur={handleBlur}
