@@ -1,4 +1,5 @@
 {
   "HOME": "/",
-  "COUNTER": "/counter"
+  "COUNTER": "/counter",
+  "PATIENT_DETAILS": "/patient-details"
 }
