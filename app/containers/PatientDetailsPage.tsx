@@ -1,33 +1,58 @@
 import React from 'react';
-import { Form, FormGroup, Label, Input } from 'reactstrap';
+import { Form, FormGroup, Label, Input, Alert, Button } from 'reactstrap';
 import { Formik } from 'formik';
 import BackButton from '../components/BackButton';
 
+interface TextFieldProps {
+  label: string;
+  name: string;
+  error: string;
+}
+
+function TextField({ label, name, error, ...rest }: TextFieldProps) {
+  return (
+    <div>
+      <Label for={name}>{label}</Label>
+      <Input type="text" name={name} id={name} {...rest} />
+      {error ? <Alert color="danger">{error}</Alert> : null}
+    </div>
+  );
+}
+
 interface Patient {
-  email: string;
+  firstName: string;
+  middleName?: string;
+  lastName?: string;
+  age: number;
+  gender: string;
+  sonOf?: string;
+  wifeOf?: string;
+  daughterOf?: string;
+  complains: Array<string>;
+  examinations: Array<string>;
+  investigations: Array<string>;
+  provisionalDiagnosis: Array<string>;
+  prescribedMedicines: Array<string>;
 }
 
 interface Errors {
-  email?: string;
+  firstName?: string;
 }
 
 export default function PatientDetailsPage() {
-  const initialValues: Patient = { email: '' };
+  const initialValues: Patient = { firstName: '' };
   return (
     <div>
       <BackButton />
       <h1>Patient details</h1>
       <Formik
         initialValues={initialValues}
-        validate={(values) => {
+        validate={(values: Patient) => {
           const errors: Errors = {};
-          if (!values.email) {
-            errors.email = 'Required';
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          ) {
-            errors.email = 'Invalid email address';
+          if (!values.firstName) {
+            errors.firstName = 'Required';
           }
+
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
@@ -47,22 +72,21 @@ export default function PatientDetailsPage() {
           isSubmitting,
           /* and other goodies */
         }) => (
-          <Form onSubmit={handleSubmit} novalidate>
+          <Form onSubmit={handleSubmit} noValidate>
             <FormGroup>
-              <Label for="exampleEmail">Email</Label>
-              <Input
-                type="email"
-                name="email"
-                id="exampleEmail"
-                placeholder="with a placeholder"
+              <TextField
+                name="firstName"
+                placeholder="Enter first name"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.email}
+                value={values.firstName}
+                error={
+                  errors.firstName && touched.firstName ? errors.firstName : ''
+                }
               />
-              <div>{errors.email && touched.email && errors.email}</div>
-              <button type="submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting}>
                 Submit
-              </button>
+              </Button>
             </FormGroup>
           </Form>
         )}
