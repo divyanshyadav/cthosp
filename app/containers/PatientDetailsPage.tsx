@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'reactstrap';
 import BackButton from '../components/BackButton';
 
 export default function PatientDetailsPage() {
@@ -6,9 +7,7 @@ export default function PatientDetailsPage() {
     <div>
       <BackButton />
       <h1>Patient form</h1>
-      <form>
-        <input type="text" />
-      </form>
+      <Button color="danger">Danger!</Button>
     </div>
   );
 }
