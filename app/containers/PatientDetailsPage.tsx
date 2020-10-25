@@ -31,6 +31,7 @@ export default function PatientDetailsPage() {
     age: '',
     relativeRelation: '',
     relativeName: '',
+    complains: [],
     examinations: [],
     investigations: [],
     provisionalDiagnosis: [],
@@ -48,6 +49,7 @@ export default function PatientDetailsPage() {
     age: Yup.number().required('Required'),
     relativeRelation: Yup.string(),
     relativeName: Yup.string(),
+    complains: Yup.array().of(Yup.string().required('Required')),
     examinations: Yup.array().of(Yup.string().required('Required')),
     investigations: Yup.array().of(Yup.string().required('Required')),
     provisionalDiagnosis: Yup.array().of(Yup.string().required('Required')),
@@ -188,6 +190,31 @@ export default function PatientDetailsPage() {
                             ? errors.relativeName
                             : ''
                         }
+                      />
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Col>
+                      <TextFieldArray
+                        values={
+                          Array.isArray(values.complains)
+                            ? values.complains
+                            : undefined
+                        }
+                        name="complains"
+                        label="complains"
+                        errors={
+                          Array.isArray(errors.complains)
+                            ? errors.complains
+                            : undefined
+                        }
+                        touches={
+                          Array.isArray(touched.complains)
+                            ? touched.complains
+                            : undefined
+                        }
+                        onChange={handleChange}
+                        onBlur={handleBlur}
                       />
                     </Col>
                   </FormGroup>
