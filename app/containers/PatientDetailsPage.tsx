@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, FormGroup, Button, Col } from 'reactstrap';
+import { Form, FormGroup, Button, Col, Label, Input } from 'reactstrap';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import BackButton from '../components/BackButton';
@@ -20,6 +20,7 @@ interface Patient {
   investigations: Array<string>;
   provisionalDiagnosis: Array<string>;
   prescribedMedicines: Array<string>;
+  radioBtn: string;
 }
 
 export default function PatientDetailsPage() {
@@ -36,6 +37,7 @@ export default function PatientDetailsPage() {
     investigations: [],
     provisionalDiagnosis: [],
     prescribedMedicines: [],
+    radioBtn:''
   };
 
   const validationSchema = Yup.object().shape({
@@ -318,6 +320,41 @@ export default function PatientDetailsPage() {
                       />
                     </Col>
                   </FormGroup>
+
+                  <FormGroup tag="fieldset">
+        <legend>Radio Buttons</legend>
+        <FormGroup check>
+          <Label check>
+            <Input type="radio" name="radio1" 
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value="Option one"
+            error={
+              errors.radioBtn && touched.radioBtn
+                ? errors.radioBtn
+                : ''
+            }
+            />{' '}
+            Option one
+          </Label>
+        </FormGroup>
+        <FormGroup check>
+          <Label check>
+            <Input type="radio" name="radio1" 
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value="Option two"
+            error={
+              errors.radioBtn && touched.radioBtn
+                ? errors.radioBtn
+                : ''
+            }
+            />{' '}
+            Option two
+          </Label>
+        </FormGroup>
+      </FormGroup>
+
                   <Button type="submit" color="primary" disabled={isSubmitting}>
                     Submit
                   </Button>
